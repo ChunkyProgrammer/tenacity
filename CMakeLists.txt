@@ -30,11 +30,11 @@ set( AUDACITY_REVISION 4 )
 set( AUDACITY_MODLEVEL 0 )
 
 if( AUDACITY_BUILD_LEVEL EQUAL 0 )
-   set( AUDACITY_SUFFIX "-alpha" )
+    set( AUDACITY_SUFFIX "-alpha" )
 elseif(  AUDACITY_BUILD_LEVEL EQUAL 1 )
-   set( AUDACITY_SUFFIX "-beta" )
+    set( AUDACITY_SUFFIX "-beta" )
 else()
-   set( AUDACITY_SUFFIX "" )
+    set( AUDACITY_SUFFIX "" )
 endif()
 
 # Don't allow in-source builds...no real reason, just
@@ -233,14 +233,12 @@ elseif( CMAKE_SYSTEM_NAME MATCHES "Darwin" )
 endif()
 
 # Try to get the current commit information
-set( GIT_COMMIT_SHORT "unknown" )
-set( GIT_COMMIT_LONG "unknown" )
-set( GIT_COMMIT_TIME "unknown" )
+set( GIT_DESCRIBE "unknown" )
 find_package( Git QUIET )
 if( GIT_FOUND )
    execute_process(
       COMMAND
-         ${GIT_EXECUTABLE} show -s "--format=%h;%H;%cd" --no-show-signature --no-notes
+         ${GIT_EXECUTABLE} describe --abbrev=5
       WORKING_DIRECTORY
          ${topdir}
       OUTPUT_VARIABLE
@@ -250,12 +248,10 @@ if( GIT_FOUND )
    )
 
    if( git_output )
-      list( GET git_output 0 GIT_COMMIT_SHORT )
-      list( GET git_output 1 GIT_COMMIT_LONG )
-      list( GET git_output 2 GIT_COMMIT_TIME )
+       list( GET git_output 0 GIT_DESCRIBE )
    endif()
 endif()
-message( STATUS "  Current Commit: ${GIT_COMMIT_SHORT}" )
+message( STATUS "  Current Commit: ${GIT_DESCRIBE}" )
 message( STATUS )
 
 # Organize subdirectories/targets into folders for the IDEs
